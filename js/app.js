@@ -21,19 +21,25 @@ app.directive("drawing", function($timeout){
 app.controller("mainController", ["$scope", function($scope){
     $scope.templates = {
         bush: 'Куст',
-        snowflake: 'Снежинка'
+        snowflake: 'Снежинка',
+        kochSnowflake: 'Снежинка Коха',
+        tree: 'Дерево'
     };
     $scope.axiom='F';
     $scope.rule = '-F+F+[+F-F-]-[-F+F+F]';
     $scope.n = 5;
     $scope.q = 3;
-    $scope.s = 25;
+    $scope.s = 20;
 
     $scope.drawTemplate = function(){
         if($scope.template == 'bush')
             drawBush();
         if($scope.template == 'snowflake')
             drawSnowflake();
+        if($scope.template == 'kochSnowflake')
+            drawKochSnowflake();
+        if($scope.template == 'tree')
+            drawTree();
     }
 
     function drawBush(){
@@ -41,17 +47,33 @@ app.controller("mainController", ["$scope", function($scope){
         $scope.rule = '-F+F+[+F-F-]-[-F+F+F]';
         $scope.n = 5;
         $scope.q = 3;
-        $scope.s = 25;
         $scope.draw();
     }
+
     function drawSnowflake(){
         $scope.axiom='[F]+[F]+[F]+[F]+[F]+[F]';
         $scope.rule = 'F[+FF][-FF]FF[+F][-F]FF';
         $scope.n = 2;
         $scope.q = 8;
-        $scope.s = 25;
         $scope.draw();
     }
+
+    function drawKochSnowflake(){
+        $scope.axiom='F++F++F';
+        $scope.rule = 'F-F++F-F';
+        $scope.n = 5;
+        $scope.q = 8;
+        $scope.draw();
+    }
+
+    function drawTree(){
+        $scope.axiom='F';
+        $scope.rule = 'F[+F][-F]';
+        $scope.n = 6;
+        $scope.q = 1;
+        $scope.draw();
+    }
+
     
     $scope.draw = function(context){
         var a = $scope;
@@ -82,15 +104,14 @@ app.controller("mainController", ["$scope", function($scope){
             }
 
             var bound = left_bottom.vectorTo(right_top);
-            var ox = new Point(400.0 / bound.x, 0);
-            var oy = new Point(0, 300.0 / bound.y);
-            if(ox.length() > oy.length())
-                ox = oy.orthoR();
-            else
-                oy = ox.orthoL();
+            var sx = 800.0 / bound.x;
+            var sy = 600.0 / bound.y;
 
-            ctx.lineWidth = 1.0 / ox.length();
-            ctx.transform(ox.x, ox.y, oy.x, oy.y, 0, 0);
+            var scale = sx < sy ? sx : sy;
+            var shift = bound.multy(0.5).plus(left_bottom).multy(scale);
+
+            ctx.lineWidth = 1.0 / scale;
+            ctx.transform(scale, 0, 0, scale, -shift.x , -shift.y);
         }
 
         function draw(points){
@@ -118,7 +139,7 @@ function turtlePaint(axiom, rule, n, q, s)
 {
     var states = [];
     var curP = new Point(0, 0);
-    var curQ = 0;
+    var curQ = Math.PI / 2;
     var points = [curP.clone()];
     
     iterations(n, axiom);

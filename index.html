@@ -69,11 +69,6 @@
                             <span class="input-group-addon">Угол поворота</span>
                             <span class="input-group-addon" ng-bind="'PI * ' + q + '/24'"></span>
                             <input type="range" min="1" max="24" class="form-control" ng-model="q">
-                        </div></p> 
-                        <p><div class="input-group">
-                            <span class="input-group-addon">Длина шага</span>
-                            <span class="input-group-addon" ng-bind="s"></span>
-                            <input type="range" min="10" max="40" class="form-control" ng-model="s">
                         </div></p>
                         <p> 
                             <button class="btn btn-default" ng-disabled="input.$invalid" ng-click="draw()">Построить</button>
@@ -89,7 +84,6 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="bower_components/jquery/dist/jquery.js"></script> 
-    <script src="bower_components/underscore/underscore.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="js/app.js"></script> 
