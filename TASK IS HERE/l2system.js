@@ -10,7 +10,7 @@ function parseString(){
   var stepLength = 10;
   var startPoint = new Point(50, 600);
   var newPoint;
-  var step = 4;
+  var step = 5;
   var angle = -Math.PI/3;
   var turnAngle = Math.PI/8;
   var rule = "F";
@@ -47,10 +47,10 @@ function parseString(){
           startPoint.x = savePositionsX.pop();
           startPoint.y = savePositionsY.pop();
           angle = saveAngle.pop();
-          ctx.moveTo(startPoint.x, startPoint.y)
+          //ctx.moveTo(startPoint.x, startPoint.y)
           break;
         default:
-          console.log("Something wrong");
+          console.log("Something go wrong");
           break;
       }
     }
