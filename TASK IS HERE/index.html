@@ -1,0 +1,36 @@
+<html>
+	<head>
+		<title>NEVER GONNA GIVE YOU UP</title>
+        <meta charset='utf-8' />
+        <script src="l2system.js"></script>
+	</head>
+	<body onload="parseString()">
+		<canvas height='450' width='900' id='cvs'/></canvas></br>
+		<p>Начальная точка</p>
+		X:
+		<input type="text" id='txtX' value="50">
+		Y:
+		<input type="text" id='txtY' value="400">
+		<p>Количество шагов</p>
+		<input id='txt0' type="number" min="1" max="10" step="1" value ="1"/>
+		<p>Начальный угол (PI/___)</p>
+		<input id='txt1' type="number" min="-10" max="10" step="1" value ="1"/>
+		<p>Угол поворота (PI/___)</p>
+		<input id='txt2' type="number" min="-10" max="10" step="1" value ="1"/>
+		<p>Аксиома</p>
+		<select id='txt3'>
+			<option value="F">F</option>
+			<option value="[F]+[F]+[F]+[F]+[F]+[F]">[F]+[F]+[F]+[F]+[F]+[F]</option>
+		</select>
+		<p>Правило</p>
+		<select id='txt4'>
+			<option value="-F+F+[+F-F-]-[-F+F+F]">-F+F+[+F-F-]-[-F+F+F]</option>
+			<option value="F[+FF][-FF]FF[+F][-F]FF">F[+FF][-FF]FF[+F][-F]FF</option>
+		</select>
+		<p></p>
+		<input type="submit" id='button' onclick="pressButtonOne()"/>
+		<script>
+
+		</script>
+	</body>
+</html>
