@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+
+    <script>
+        function LSystem(axiom, rules) {
+            this.axiom = axiom;
+            this.rules = rules;
+
+            this.getFollower = function (sym) {
+                for (var i = 0; i < this.rules.length; i++) {
+                    var tmp = this.rules[i].charAt(0);
+                    if (tmp == sym) {
+                        var result = this.rules[i].substring(2, this.rules[i].length);
+                        return result;
+                    }
+                }
+                return sym;
+            };
+
+            this.apply = function (string) {
+                var result = "";
+                var n = string.length;
+                for (var i = 0; i < n; i++) {
+                    var a = this.getFollower(string[i]);
+                    result = result + a;
+                }
+                return result;
+            };
+
+            this.getResult = function (n) {
+                var result = this.axiom;
+                for (var i = 0; i < n; i++) {
+
+                    result = this.apply(result);
+                }
+                return result;
+            };
+        }
+
+        function Painter(paint, lenStep, angle) {
+            this.p = paint;
+            this.s = lenStep;
+            this.q = angle;
+
+            this.draw = function (string) {
+                var canvas = document.getElementById("canvas2");
+                var canvasHeight = parseInt(canvas.getAttribute("height"));
+                var canvasWidth = parseInt(canvas.getAttribute("width"));
+                var context = canvas.getContext('2d');
+                context.lineWidth = "1";
+                context.strokeStyle = "black";
+                context.beginPath();
+                context.moveTo(this.p.x, this.p.y);
+                var stack = [];
+
+                for (var i = 0; i < string.length; i++) {
+                    switch (string.charAt(i)) {
+                        case 'F':
+                            this.p.x -= this.s * Math.cos(-this.p.a * Math.PI / 180);
+                            this.p.y -= this.s * Math.sin(-this.p.a * Math.PI / 180);
+                            context.lineTo(this.p.x, this.p.y);
+                            break;
+                        case '+':
+                            this.p.a -= this.q;
+                            break;
+                        case '-':
+                            this.p.a += this.q;
+                            break;
+                        case '[':
+                            stack.push({ x: this.p.x, y: this.p.y, a: this.p.a })
+                            break;
+                        case ']':
+                            var tmp = stack.pop();
+                            this.p.x = tmp.x;
+                            this.p.y = tmp.y;
+                            this.p.a = tmp.a;
+                            context.moveTo(this.p.x, this.p.y);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                context.stroke();
+            }
+
+        }
+
+
+        function run() {
+
+            
+            var fractal = prompt ("Введите 1(куст) или 2(снежинка)", 1);
+            if (fractal == "2"){
+                var n = 3;
+                var q =60;
+                var s =2;
+                var point = { x: 450, y: 450, a: 0 };
+                var ls = new LSystem("[F]+[F]+[F]+[F]+[F]+[F]", ["F F[+FF][-FF]FF[+F][-F]FF"]);
+            }
+            else{
+                var q = 22.5;
+                var s = 10; 
+                var point = { x: 450, y: 450, a: 250 };
+                var ls = new LSystem("F", ["F -F+F+[+F-F-]-[-F+F+F]"]);
+                var n = 4;     
+            }
+              
+            var alg = ls.getResult(n);
+            var painter = new Painter(point, s, q);
+            painter.draw(alg);
+        }
+    </script>
+
+    <body onload="run()">
+        <canvas height='900' width='900' id='canvas2'></canvas>
+
+
+
+    </body>
+
+</html>
